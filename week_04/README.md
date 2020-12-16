@@ -1,1 +1,2 @@
- 
+# Tidyverse's various functions seem extremelly useful for inspecting and singling out certain elements from a dataset.Being able to mutate, filter, and select for specific conditions is especially important when trying to convey and create graphs for specific variables and conditions.
+#The ability of Tidyverse to join relational databases is especially interesting. Being able to join to seperate databases through the three join functions allows for insight and creation of visuals that was not possible before.
