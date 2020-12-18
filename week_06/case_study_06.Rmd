@@ -1,7 +1,47 @@
 ---
 title: "Case Study 06"
-author: Your Name
+author: Kyle DeSimone
 date: August 1, 2020
 output: github_document
 ---
  
+library(raster)
+library(sp)
+library(spData)
+library(tidyverse)
+library(sf)
+
+#Step 1 Prepare country polygon data (the world object)
+data(world)  #load 'world' data from spData package
+
+worldfilter <- world %>% filter(continent != 'Antarctica')
+worldfilter_spatial <- as(worldfilter,"Spatial") 
+
+#Step 2 Prepare Climate Data
+
+tmax_monthly <- getData(name = "worldclim", var="tmax", res=10)
+gain(tmax_monthly) <-.1 #already in celsius
+#tmax_monthly
+#plot(tmax_monthly)
+tmax_annual <- max(tmax_monthly)
+names(tmax_annual) <- "tmax"
+
+#Step 3 Calculate the maximum temperature observed in each country.
+countrymax<- raster::extract(tmax_annual, worldfilter_spatial, fun = max, na.rm=T, small=T, sp=T )
+countrymaxsf<- st_as_sf(countrymax)
+
+#4 Plot and communicate
+
+#Map
+maxtempmap<- ggplot(countrymaxsf) + geom_sf(aes(fill = tmax)) + scale_fill_viridis_c(name="Annual\nMaximum\nTemperature (C)")+
+  theme(legend.position = 'bottom')
+maxtempmap
+ggsave("annualmaxmap.png", device = "png")
+
+#Table
+maxtemptable <-countrymaxsf %>% group_by(continent) %>% st_set_geometry(NULL) %>% top_n(1, tmax) %>% select(name_long,continent,tmax) %>% arrange(desc(tmax))
+
+maxtemptable
+
+
+

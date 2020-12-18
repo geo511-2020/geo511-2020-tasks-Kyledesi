@@ -1,22 +1,32 @@
 ---
 title: "Case Study 04"
-author: Your Name
+author: Kyle DeSimone
 date: August 1, 2020
 output: github_document
 ---
 
-## First Header
 
-Comments
 
 ```{r}
-summary(cars)
+library(tidyverse)
+library(nycflights13)
+library(dplyr)
+
+view(flights)
+view(airports)
+#view(weather)
+#view(planes)
+#view(airlines) commented datasets are not needed
+
+flightjoin <- flights %>% left_join(airports, c("dest" = "faa"))
+flightjoinfar <- flightjoin %>% arrange(desc(distance))
+
+nycfurthest <- flightjoinfar %>% slice(1) %>% select(name)
+
+nycfurthest
 ```
 
-## Second Header
 
-Comments
 
-```{r}
-plot(pressure)
-```
+
+

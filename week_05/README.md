@@ -1,1 +1,3 @@
- 
+#Being able to use functions to change from sf to sp back and forth using st_as_sf() and as() and and the ability able to treat sf objects as a dataframe seems extremely useful. All in all, sf seems to make life easier. 
+#It seems rather easy to use plot and st_geometry to quickly make various geographic visuals.
+#Being able to use st_area to get quickly the numerical unit for the object is another useful tool to anaylze the spatial object in question.

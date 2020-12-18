@@ -1,7 +1,52 @@
 ---
 title: "Case Study 12"
-author: Your Name
+author: Kyle DeSimone
 date: August 1, 2020
 output: github_document
 ---
- 
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(htmlwidgets)
+library(widgetframe)
+
+
+# Given Code
+library(tidyverse)
+library(rnoaa)
+library(xts)
+library(dygraphs)
+
+d=meteo_tidy_ghcnd("USW00014733",
+                   date_min = "2016-01-01", 
+                   var = c("TMAX"),
+                   keep_flags=T) %>% 
+  mutate(date=as.Date(date),
+         tmax=as.numeric(tmax)/10) #Divide the tmax data by 10 to convert to degrees.
+
+#Convert d into an xts time series object 
+
+dtso <- xts(d$tmax, order.by = d$date)
+
+#Draw Graph
+
+dygraph(dtso, main = "Daily Maximum Temperature in Buffalo, NY") %>%
+  dyRangeSelector(dateWindow = c("2020-01-01", "2020-10-31"))
+  
+#Explore other options
+
+meteo_tidy_ghcnd("USW00014733",
+                 date_min = "2016-01-01")
+#Plot snowfall in buffalo               
+#Adjust for snow
+
+dsnow <- meteo_tidy_ghcnd("USW00014733",
+                   date_min = "2016-01-01", 
+                   var = c("snow"),
+                   keep_flags=T) %>% 
+  mutate(date=as.Date(date), snow=as.numeric(snow)/10) 
+         
+snowtso <- xts(dsnow$snow, order.by = d$date)
+
+dygraph(snowtso, main = "Daily Maximum Snowfall in Buffalo, NY") %>%
+  dyRangeSelector(dateWindow = c("2020-01-01", "2020-10-31"))

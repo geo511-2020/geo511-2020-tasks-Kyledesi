@@ -1,1 +1,2 @@
- 
+#R is able to produce some extremely high quality spatial maps. This is really cool to see after only working on arcgis for years.
+#st_join and set_is_within_distance seems like another very useful function in joining different spatial data sets and producing quality maps.
